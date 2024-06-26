@@ -39,3 +39,8 @@ h1 {
     border-radius: 5px;
     display: inline-block;
 }
+
+#high-score {
+    font-size: 20px;
+    margin: 10px;
+}

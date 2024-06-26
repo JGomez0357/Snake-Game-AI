@@ -2,6 +2,7 @@
 const gameBoard = document.querySelector("#gameBoard");
 const ctx = gameBoard.getContext("2d");
 const scoreText = document.querySelector("#scoreText")
+const highScoreElement = document.querySelector("#high-score"); // NEW
 const gameWidth = gameBoard.width;
 const gameHeight = gameBoard.height;
 const boardBackground = "white";
@@ -15,6 +16,10 @@ let yVelocity = 0; //how far the snake moves on the y-axis every game tick. Orig
 let foodX; //x-coordinate of food
 let foodY; //y-coordinate of food
 let score = 0;
+let highScore = localStorage.getItem('highScore') || 0; //gets high score from localStorage
+
+//Displays high score
+highScoreElement.textContent = 'High Score: ' + highScore;
 
 
 //create the snake's inital body
@@ -104,6 +109,7 @@ function moveSnake(){
     else{
         snake.pop();
     }
+    updateHighScore(); //Updates high score
 }
 function drawSnake(){
     ctx.fillStyle = snakeColor;
@@ -189,4 +195,13 @@ function resetGame(){
         {x:0, y:0}
     ];
     gameStart();
+}
+
+//updates high score if current score is higher
+function updateHighScore() {
+    if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('highScore', highScore);
+        highScoreElement.textContent = 'High Score: ' + highScore;
+    }
 }
