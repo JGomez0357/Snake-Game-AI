@@ -1,11 +1,41 @@
-#gameContainer{
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #f5a623, #f76b1c);
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    color: #ffffff;
+}
+
+#gameContainer {
     text-align: center;
-    margin: 7%;
+    background: #222;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
-#gameBoard{
-    border: 3px solid;
+
+h1 {
+    margin: 0 0 20px;
+    font-size: 2em;
+    color: #ffffff;
 }
-#scoreText{
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 100px;
+
+#gameBoard {
+    border: 3px solid #f5a623;
+    background: #444;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+#scoreText {
+    font-family: 'Verdana', Geneva, Tahoma, sans-serif;
+    font-size: 50px;
+    color: #ffffff;
+    background: #333;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
 }

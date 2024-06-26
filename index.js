@@ -30,6 +30,13 @@ let snake = [
 //event listeners
 window.addEventListener("keydown", changeDirection);
 
+// Prevent window from scrolling when using arrow keys
+window.addEventListener("keydown", function(e) {
+    // Check if the pressed key is one of the arrow keys
+    if ([37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        e.preventDefault();
+    }
+});
 
 gameStart();
 
