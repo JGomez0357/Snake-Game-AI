@@ -3,7 +3,6 @@ const gameBoard = document.querySelector("#gameBoard");
 const ctx = gameBoard.getContext("2d");
 const scoreText = document.querySelector("#scoreText");
 const highScoreElement = document.querySelector("#highScore"); // Updated ID
-const startButton = document.querySelector("#startButton"); //assigns start button
 const gameWidth = gameBoard.width;
 const gameHeight = gameBoard.height;
 const boardBackgroundLight = "white";
@@ -42,27 +41,12 @@ window.addEventListener("keydown", function(e) {
     }
 });
 
-// removed gameStart();
-startButton.addEventListener("click", () => {
-    if (!running) {
-    gameStart(); //start game when button is clicked
-    }
-});
+gameStart();
 
 // Game functions
 function gameStart() {
     running = true;
-    score = 0; //reset score
-    xVelocity = unitSize; //reset xVelocity
-    yVelocity = 0; //reset yVelocity
     scoreText.textContent = score;
-    snake = [ //reset snake
-        {x:unitSize * 4, y:0},
-        {x:unitSize * 3, y:0},
-        {x:unitSize * 2, y:0},
-        {x:unitSize, y:0},
-        {x:0, y:0}
-    ];
     createFood();
     drawFood();
     nextTick();
@@ -195,9 +179,7 @@ function displayGameOver() {
     ctx.fillText("GAME OVER", gameWidth / 2, gameHeight / 2);
     running = false;
 
-    setTimeout(() => {
-        startButton.disabled = false; //Enable start button
-    }, 500);
+    setTimeout(resetGame, 500);
 }
 
 function resetGame() {
