@@ -70,14 +70,23 @@ function drawGrid() {
         }
     }
 }
-function createFood(){
-    function randomFood(min,max){
+function createFood() {
+    function randomFood(min, max) {
         const randNum = Math.round((Math.random() * (max - min) + min) / unitSize) * unitSize;
         return randNum;
     }
-    foodX = randomFood(0, gameWidth - unitSize);
-    foodY = randomFood(0, gameWidth - unitSize);
-    console.log(foodX);
+
+    let foodPositionIsValid = false;
+
+    while (!foodPositionIsValid) {
+        foodX = randomFood(0, gameWidth - unitSize);
+        foodY = randomFood(0, gameHeight - unitSize);
+
+        // Check if the food position collides with the snake
+        foodPositionIsValid = !snake.some(part => part.x === foodX && part.y === foodY);
+    }
+
+    console.log(foodX, foodY);
 }
 function drawFood(){
     ctx.fillStyle = foodColor;
