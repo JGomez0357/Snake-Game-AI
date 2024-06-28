@@ -44,7 +44,7 @@ window.addEventListener("keydown", function(e) {
 gameStart();
 
 // Game functions
-function gameStart() {
+function gameStart(){
     running = true;
     scoreText.textContent = score;
     createFood();
@@ -52,7 +52,7 @@ function gameStart() {
     nextTick();
 }
 
-function nextTick() {
+function nextTick(){
     if (running) {
         setTimeout(() => {
             clearBoard();
@@ -80,26 +80,38 @@ function drawCheckeredBoard() {
     }
 }
 
-function createFood() {
-    function randomFood(min, max) {
+function createFood(){
+    function randomFood(min, max){
         const randNum = Math.round((Math.random() * (max - min) + min) / unitSize) * unitSize;
         return randNum;
     }
     foodX = randomFood(0, gameWidth - unitSize);
     foodY = randomFood(0, gameWidth - unitSize);
+    console.log(foodX);
 }
 
-function drawFood() {
+function drawFood(){
     ctx.fillStyle = foodColor;
     ctx.fillRect(foodX, foodY, unitSize, unitSize);
 }
 
-function moveSnake() {
-    const head = {x: snake[0].x + xVelocity, y: snake[0].y + yVelocity};
+function moveSnake(){
+    const path = findPath(snake[0], {x: foodX, y: foodY});
+    if (path.length > 1) {
+        const nextMove = path[1]; // The first element is the current position
+        const xDiff = nextMove.x - snake[0].x;
+        const yDiff = nextMove.y - snake[0].y;
 
+        // Set the velocity based on the next move
+        xVelocity = xDiff;
+        yVelocity = yDiff;
+    }
+
+    const head = {x: snake[0].x + xVelocity, y: snake[0].y + yVelocity};
     snake.unshift(head);
-    // if food is eaten
-    if (snake[0].x === foodX && snake[0].y === foodY) {
+
+    // If food is eaten
+    if (snake[0].x == foodX && snake[0].y == foodY) {
         score += 1;
         scoreText.textContent = score;
         createFood();
@@ -109,7 +121,7 @@ function moveSnake() {
     updateHighScore(); // Updates high score
 }
 
-function drawSnake() {
+function drawSnake(){
     ctx.fillStyle = snakeColor;
     ctx.strokeStyle = snakeBorder;
     snake.forEach(snakePart => {
@@ -119,38 +131,10 @@ function drawSnake() {
 }
 
 function changeDirection(event) {
-    const keyPressed = event.keyCode;
-    const LEFT = 37;
-    const UP = 38;
-    const RIGHT = 39;
-    const DOWN = 40;
-
-    const goingUp = (yVelocity === -unitSize);
-    const goingDown = (yVelocity === unitSize);
-    const goingRight = (xVelocity === unitSize);
-    const goingLeft = (xVelocity === -unitSize);
-
-    switch (true) {
-        case (keyPressed === LEFT && !goingRight):
-            xVelocity = -unitSize;
-            yVelocity = 0;
-            break;
-        case (keyPressed === UP && !goingDown):
-            xVelocity = 0;
-            yVelocity = -unitSize;
-            break;
-        case (keyPressed === RIGHT && !goingLeft):
-            xVelocity = unitSize;
-            yVelocity = 0;
-            break;
-        case (keyPressed === DOWN && !goingUp):
-            xVelocity = 0;
-            yVelocity = unitSize;
-            break;
-    }
+    // Disable player control
 }
 
-function checkGameOver() {
+function checkGameOver(){
     switch (true) {
         case (snake[0].x < 0):
             running = false;
@@ -166,13 +150,13 @@ function checkGameOver() {
             break;
     }
     for (let i = 1; i < snake.length; i += 1) {
-        if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) {
+        if (snake[i].x == snake[0].x && snake[i].y == snake[0].y) {
             running = false;
         }
     }
 }
 
-function displayGameOver() {
+function displayGameOver(){
     ctx.font = "bold 80px Verdana";
     ctx.fillStyle = "black";
     ctx.textAlign = "center";
@@ -182,7 +166,7 @@ function displayGameOver() {
     setTimeout(resetGame, 500);
 }
 
-function resetGame() {
+function resetGame(){
     score = 0;
     xVelocity = unitSize;
     yVelocity = 0;
@@ -196,6 +180,91 @@ function resetGame() {
         {x: 0, y: 0}
     ];
     gameStart();
+}
+
+// A* Algorithm Implementation
+function findPath(start, goal) {
+    const openList = [];
+    const closedList = [];
+    openList.push(start);
+
+    const cameFrom = {};
+    const gScore = {};
+    const fScore = {};
+
+    gScore[`${start.x},${start.y}`] = 0;
+    fScore[`${start.x},${start.y}`] = heuristic(start, goal);
+
+    while (openList.length > 0) {
+        // Get the node with the lowest fScore
+        const current = openList.reduce((prev, curr) => {
+            return fScore[`${prev.x},${prev.y}`] < fScore[`${curr.x},${curr.y}`] ? prev : curr;
+        });
+
+        // If the goal is reached
+        if (current.x === goal.x && current.y === goal.y) {
+            return reconstructPath(cameFrom, current);
+        }
+
+        // Remove current from openList and add to closedList
+        openList.splice(openList.indexOf(current), 1);
+        closedList.push(current);
+
+        // Get neighbors
+        const neighbors = getNeighbors(current);
+
+        neighbors.forEach(neighbor => {
+            if (closedList.some(node => node.x === neighbor.x && node.y === neighbor.y) ||
+                snake.some(part => part.x === neighbor.x && part.y === neighbor.y)) {
+                return;
+            }
+
+            const tentative_gScore = gScore[`${current.x},${current.y}`] + 1;
+
+            if (!openList.some(node => node.x === neighbor.x && node.y === neighbor.y)) {
+                openList.push(neighbor);
+            } else if (tentative_gScore >= gScore[`${neighbor.x},${neighbor.y}`]) {
+                return;
+            }
+
+            cameFrom[`${neighbor.x},${neighbor.y}`] = current;
+            gScore[`${neighbor.x},${neighbor.y}`] = tentative_gScore;
+            fScore[`${neighbor.x},${neighbor.y}`] = gScore[`${neighbor.x},${neighbor.y}`] + heuristic(neighbor, goal);
+        });
+    }
+
+    return [];
+}
+
+function getNeighbors(node) {
+    const neighbors = [];
+    const possibleMoves = [
+        {x: node.x + unitSize, y: node.y},
+        {x: node.x - unitSize, y: node.y},
+        {x: node.x, y: node.y + unitSize},
+        {x: node.x, y: node.y - unitSize}
+    ];
+
+    possibleMoves.forEach(move => {
+        if (move.x >= 0 && move.x < gameWidth && move.y >= 0 && move.y < gameHeight) {
+            neighbors.push(move);
+        }
+    });
+
+    return neighbors;
+}
+
+function heuristic(node, goal) {
+    return Math.abs(node.x - goal.x) + Math.abs(node.y - goal.y);
+}
+
+function reconstructPath(cameFrom, current) {
+    const totalPath = [current];
+    while (cameFrom[`${current.x},${current.y}`]) {
+        current = cameFrom[`${current.x},${current.y}`];
+        totalPath.unshift(current);
+    }
+    return totalPath;
 }
 
 // Updates high score if current score is higher
