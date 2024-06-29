@@ -21,7 +21,7 @@ let foodY; // y-coordinate of food
 let score = 0;
 let highScore = localStorage.getItem('highScore') || 0; // gets high score from localStorage
 let sessionScores = []; // Array to store scores of the current session
-let gameSpeed;
+let gameSpeed = 50;
 
 speedSliderElement.addEventListener('input', function() {
     const value = speedSliderElement.value;
