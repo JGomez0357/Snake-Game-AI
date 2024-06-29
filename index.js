@@ -3,6 +3,8 @@ const gameBoard = document.querySelector("#gameBoard");
 const ctx = gameBoard.getContext("2d");
 const scoreText = document.querySelector("#scoreText");
 const highScoreElement = document.querySelector("#highScore"); // Updated ID
+const avgScoreElement = document.querySelector("#avgScore")
+const speedSliderElement = document.getElementById("speedSlider");
 const gameWidth = gameBoard.width;
 const gameHeight = gameBoard.height;
 const boardBackgroundLight = "white";
@@ -18,6 +20,13 @@ let foodX; // x-coordinate of food
 let foodY; // y-coordinate of food
 let score = 0;
 let highScore = localStorage.getItem('highScore') || 0; // gets high score from localStorage
+let sessionScores = []; // Array to store scores of the current session
+let gameSpeed;
+
+speedSliderElement.addEventListener('input', function() {
+    const value = speedSliderElement.value;
+    gameSpeed = value;
+});
 
 // Displays high score
 highScoreElement.textContent = 'High Score: ' + highScore;
@@ -61,7 +70,7 @@ function nextTick(){
             drawSnake();
             checkGameOver();
             nextTick();
-        }, 75);
+        }, gameSpeed);
     } else {
         displayGameOver();
     }
@@ -96,7 +105,7 @@ function createFood() {
         foodPositionIsValid = !snake.some(part => part.x === foodX && part.y === foodY);
     }
 
-    console.log(foodX, foodY);
+    //console.log(foodX, foodY);
 }
 function drawFood(){
     ctx.fillStyle = foodColor;
@@ -175,6 +184,8 @@ function displayGameOver(){
 }
 
 function resetGame(){
+    console.log("Round Score: " + score)
+    updateAvgScore();
     score = 0;
     xVelocity = unitSize;
     yVelocity = 0;
@@ -283,3 +294,23 @@ function updateHighScore() {
         highScoreElement.textContent = 'High Score: ' + highScore;
     }
 }
+
+// Updates avg score
+function updateAvgScore() {
+        sessionScores.push(score);
+        let sum = (sessionScores.reduce((accumulator, currValue) => accumulator + currValue, 0));
+        let avgScore = roundIfDecimal((sum/sessionScores.length),1);
+        console.log("Avgerage score: " + avgScore);
+
+        avgScoreElement.textContent = 'Avg Score: ' + avgScore;
+}
+
+//rounds number if it is a decimal
+function roundIfDecimal(num, decimalPlaces) {
+    // Check if the number has a fractional part
+    if (num % 1 !== 0) {
+        return parseFloat(num.toFixed(decimalPlaces));
+    }
+    return num;
+}
+

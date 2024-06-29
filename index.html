@@ -12,7 +12,17 @@
         <canvas id="gameBoard" width="600" height="600"></canvas>
         <div id="scoreContainer">
             <div id="scoreText">0</div>
-            <div id="highScore">High Score: 0</div>
+            <div id="scoreStats">
+                <div id="highScore">High Score: 0</div>
+                <div id="avgScore">Avg Score: 0</div>
+            </div>
+        </div>
+        <br>
+        <div id="speedContainer">
+            <label id="gameSpeedLabel">Game Speed</label><br>
+            <label id="fastLabel">Fast</label>
+            <input type="range" min="0" max="100" value="50" id="speedSlider">
+            <label id="slowLabel">Slow</label>
         </div>
     </div>
     <script src="index.js"></script>

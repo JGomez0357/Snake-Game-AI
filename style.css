@@ -30,7 +30,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-#scoreContainer {
+#scoreContainer{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -42,9 +42,39 @@ h1 {
 
 #scoreText {
     font-family: 'Verdana', Geneva, Tahoma, sans-serif;
-    font-size: 50px;
+    font-size: 75px;
+    margin-left: 5%;
 }
 
-#highScore {
+#scoreStats {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#highScore, #avgScore {
     font-size: 45px;
 }
+
+#speedSlider{
+    width: 75%;
+    cursor: pointer;
+}
+
+#gameSpeedLabel, #fastLabel, #slowLabel{
+    font-size: 15px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+#speedContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    padding-left: 0%;
+    background: #333;
+    border-radius: 5px;
+    color: #ffffff;
+}
+
