@@ -61,7 +61,7 @@ h1 {
     cursor: pointer;
 }
 
-#gameSpeedLabel, #fastLabel, #slowLabel{
+#gameSpeedLabel, #fastLabel, #slowLabel, #autoplayLabel{
     font-size: 15px;
     color: #ffffff;
     font-weight: bold;

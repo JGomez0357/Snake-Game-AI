@@ -5,6 +5,7 @@ const scoreText = document.querySelector("#scoreText");
 const highScoreElement = document.querySelector("#highScore"); // Updated ID
 const avgScoreElement = document.querySelector("#avgScore")
 const speedSliderElement = document.getElementById("speedSlider");
+const autoplay = document.getElementById("autoplayCheck");
 const gameWidth = gameBoard.width;
 const gameHeight = gameBoard.height;
 const boardBackgroundLight = "white";
@@ -55,6 +56,14 @@ window.addEventListener("keydown", function(e) {
         e.preventDefault();
     }
 });
+
+//When autoplay is enabled at gameover, it restarts the game
+autoplay.addEventListener("change", function() {
+    if(!running){
+        resetGame();
+    }
+});
+
 
 // Event listener for the "P" key to pause/resume the game
 window.addEventListener("keydown", function(e) {
@@ -195,6 +204,10 @@ function displayGameOver(){
     ctx.textAlign = "center";
     ctx.fillText("GAME OVER", gameWidth / 2, gameHeight / 2);
     running = false;
+    //Automatically start game if autoplay is enabled
+    if(autoplay.checked){
+        setTimeout(resetGame, 300);
+    }
 }
 
 function resetGame(){
