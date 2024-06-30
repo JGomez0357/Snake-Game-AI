@@ -78,3 +78,8 @@ h1 {
     color: #ffffff;
 }
 
+#replayButton{
+    margin-left: 5%;
+    cursor: pointer;
+}
+

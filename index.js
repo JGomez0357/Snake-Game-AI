@@ -6,6 +6,7 @@ const highScoreElement = document.querySelector("#highScore"); // Updated ID
 const avgScoreElement = document.querySelector("#avgScore")
 const speedSliderElement = document.getElementById("speedSlider");
 const autoplay = document.getElementById("autoplayCheck");
+const replayButton = document.getElementById("replayButton");
 const gameWidth = gameBoard.width;
 const gameHeight = gameBoard.height;
 const boardBackgroundLight = "white";
@@ -62,6 +63,10 @@ window.addEventListener("keydown", function(e) {
     if (e.key === "p" || e.key === "P") {
         togglePause();
     }
+});
+
+replayButton.addEventListener('click', function(){
+    location.reload();
 });
 
 gameStart();
