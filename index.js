@@ -19,7 +19,7 @@ let yVelocity = 0; // how far the snake moves on the y-axis every game tick. Ori
 let foodX; // x-coordinate of food
 let foodY; // y-coordinate of food
 let score = 0;
-let highScore = localStorage.getItem('highScore') || 0; // gets high score from localStorage
+let highScore = sessionStorage.getItem('highScore') || 0; // gets high score from sessionStorage
 let sessionScores = []; // Array to store scores of the current session
 let gameSpeed = 50;
 
@@ -290,7 +290,7 @@ function reconstructPath(cameFrom, current) {
 function updateHighScore() {
     if (score > highScore) {
         highScore = score;
-        localStorage.setItem('highScore', highScore);
+        sessionStorage.setItem('highScore', highScore);
         highScoreElement.textContent = 'High Score: ' + highScore;
     }
 }
