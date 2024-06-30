@@ -57,14 +57,6 @@ window.addEventListener("keydown", function(e) {
     }
 });
 
-//When autoplay is enabled at gameover, it restarts the game
-autoplay.addEventListener("change", function() {
-    if(!running){
-        resetGame();
-    }
-});
-
-
 // Event listener for the "P" key to pause/resume the game
 window.addEventListener("keydown", function(e) {
     if (e.key === "p" || e.key === "P") {
