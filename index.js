@@ -125,7 +125,9 @@ function createFood() {
         foodPositionIsValid = !snake.some(part => part.x === foodX && part.y === foodY);
     }
 
-    //console.log(foodX, foodY);
+
+    console.log(foodX, foodY);
+
 }
 function drawFood(){
     ctx.fillStyle = foodColor;
