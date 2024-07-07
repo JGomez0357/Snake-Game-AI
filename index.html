@@ -3,13 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake AI</title>
+    <title>Snake Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="gameContainer">
+        <h1>Snake Game</h1>
         <canvas id="gameBoard" width="600" height="600"></canvas>
-        <div id="scoreText">0</div>
+        <div id="scoreContainer">
+            <div id="scoreText">0</div>
+            <div id="scoreStats">
+                <div id="highScore">High Score: 0</div>
+                <div id="avgScore">Avg Score: 0</div>
+            </div>
+        </div>
+        <br>
+        <div id="speedContainer">
+            <label id="gameSpeedLabel">Game Speed</label><br>
+            <label id="fastLabel">Fast</label>
+            <input type="range" min="0" max="100" value="50" id="speedSlider">
+            <label id="slowLabel">Slow</label>
+        </div>
+        <br>
+        <input type="checkbox" id="autoplayCheck" checked>
+        <label for="autoplayCheck" id="autoplayLabel">Autoplay</label>
+        <button id="replayButton">Replay</button>
     </div>
     <script src="index.js"></script>
 </body>
